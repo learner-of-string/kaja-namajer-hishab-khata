@@ -43,11 +43,10 @@ A full-stack web application for tracking missed prayers (কাযা নাম
 3. Create a `.env` file with your MongoDB URI:
    ```env
    db_uri=YOUR_MONGODB_URI
-   port=3000
    ```
 4. Start the server:
    ```bash
-   node index.js
+   pnpm dev
    ```
 
 ### Frontend Setup
@@ -59,7 +58,7 @@ A full-stack web application for tracking missed prayers (কাযা নাম
 3. Set up Firebase in `src/firebase/firebase.init.js`
 4. Start the frontend:
    ```bash
-   pnpm run dev
+   pnpm dev
    ```
 
 ---
