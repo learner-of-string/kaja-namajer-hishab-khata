@@ -83,8 +83,8 @@ const UpdateKajaDialog = ({ kajaInfo }) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <form>
                 <DialogTrigger asChild>
-                    <button className="flex gap-0.5 items-center text-yellow-900 hover:underline cursor-pointer">
-                        <HiPencilSquare /> Edit
+                    <button className="flex gap-0.5 items-center justify-center text-pink-900 text-xl font-medium hover:underline cursor-pointer w-full rounded-full border-2 border-pink-900 py-3 mt-4">
+                        <HiPencilSquare /> <span>Update your kaja count</span>
                     </button>
                 </DialogTrigger>
 
