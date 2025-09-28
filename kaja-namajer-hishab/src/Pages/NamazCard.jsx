@@ -27,8 +27,6 @@ const NamazCard = ({ kaja }) => {
 
     return (
         <div className="p-5 border-2 border-zinc-100 bg-purple-50 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 flex flex-col justify-between h-full">
-            {/* Wrapper for the content that should stay at the top. 
-                We use a gap here for spacing between the header and counts. */}
             <div className="gap-5 flex flex-col">
                 <div className="flex justify-start">
                     <h1 className="flex gap-2 text-2xl font-semibold text-neutral-700">
