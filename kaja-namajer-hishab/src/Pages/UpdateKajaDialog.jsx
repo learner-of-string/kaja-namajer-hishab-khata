@@ -28,7 +28,8 @@ const UpdateKajaDialog = ({ kajaInfo }) => {
 
     const { user } = useContext(AuthContext);
 
-    const { setRegularCount, setQasrCount } = kajaInfo;
+    const { setRegularCount, setQasrCount, updateTotalKajaRn, allKaja } =
+        kajaInfo;
 
     const prayerIcons = {
         fajar: "🌅",
@@ -64,6 +65,26 @@ const UpdateKajaDialog = ({ kajaInfo }) => {
                     setOpen(false);
                     setRegularCount(regularKaja);
                     setQasrCount(currentQasr);
+
+                    // Update total kaja count in context
+                    const updatedAllKaja = allKaja.map((kaja) =>
+                        kaja.namazName === kajaInfo?.namazName
+                            ? {
+                                  ...kaja,
+                                  regular: regularKaja,
+                                  qasr: currentQasr,
+                              }
+                            : kaja
+                    );
+                    const newTotal = updatedAllKaja.reduce((sum, eachKaja) => {
+                        return (
+                            sum +
+                            (eachKaja?.regular || 0) +
+                            (eachKaja?.qasr || 0)
+                        );
+                    }, 0);
+                    updateTotalKajaRn(newTotal);
+
                     toast.success("Changes Saved Successfully!");
                 }
             })

@@ -8,30 +8,49 @@ import NamazCard from "./NamazCard";
 
 const NamazList = () => {
     const [allKaja, setAllKaja] = useState([]);
+    const [dataLoading, setDataLoading] = useState(true);
 
     const navigate = useNavigate();
 
-    const { kickOutUser, user } = useContext(AuthContext);
+    const { kickOutUser, user, totalKajaRn, updateTotalKajaRn } =
+        useContext(AuthContext);
 
     useEffect(() => {
         if (!user?.email) {
             // Prevent API call if user email is not available
+            setDataLoading(false);
             return;
         }
 
+        setDataLoading(true);
         axios
             .get(`${import.meta.env.VITE_SERVER_URL}/namaz/missed`, {
                 params: { userIdentity: user.email },
             })
             .then((res) => {
                 setAllKaja(res.data.namazCounts);
+                // Calculate and update total kaja count in context
+                const calculatedTotal = (res.data.namazCounts || []).reduce(
+                    (sum, eachKaja) => {
+                        return (
+                            sum +
+                            (eachKaja?.regular || 0) +
+                            (eachKaja?.qasr || 0)
+                        );
+                    },
+                    0
+                );
+                updateTotalKajaRn(calculatedTotal);
             })
             .catch((error) => {
                 console.error("Failed to fetch namaz data:", error);
                 setAllKaja([]);
                 toast.error("Failed to load prayer data.");
+            })
+            .finally(() => {
+                setDataLoading(false);
             });
-    }, [user, navigate]);
+    }, [user, navigate, updateTotalKajaRn]);
 
     const signOutUser = () => {
         kickOutUser()
@@ -46,9 +65,18 @@ const NamazList = () => {
             });
     };
 
-    const totalKajaRn = (allKaja || []).reduce((sum, eachKaja) => {
-        return sum + (eachKaja?.regular || 0) + (eachKaja?.qasr || 0);
-    }, 0);
+    // Use totalKajaRn from context instead of calculating locally
+
+    if (dataLoading) {
+        return (
+            <div className="flex flex-col gap-5 justify-center items-center flex-1 px-4 text-center mt-24">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-900"></div>
+                <p className="md:text-2xl text-lg font-semibold text-gray-600">
+                    Loading your prayer data...
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -73,7 +101,12 @@ const NamazList = () => {
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {allKaja.map((eachKaja) => (
-                    <NamazCard key={eachKaja.namazName} kaja={eachKaja} />
+                    <NamazCard
+                        key={eachKaja.namazName}
+                        kaja={eachKaja}
+                        updateTotalKajaRn={updateTotalKajaRn}
+                        allKaja={allKaja}
+                    />
                 ))}
             </div>
             <div className="flex justify-end mt-6">

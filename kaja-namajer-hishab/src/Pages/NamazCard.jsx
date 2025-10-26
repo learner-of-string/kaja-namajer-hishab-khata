@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import UpdateKajaDialog from "./UpdateKajaDialog";
 
-const NamazCard = ({ kaja }) => {
+const NamazCard = ({ kaja, updateTotalKajaRn, allKaja }) => {
     const [regularCount, setRegularCount] = useState(0);
     const [qasrCount, setQasrCount] = useState(0);
 
@@ -60,6 +60,8 @@ const NamazCard = ({ kaja }) => {
                             setRegularCount,
                             qasrCount,
                             setQasrCount,
+                            updateTotalKajaRn,
+                            allKaja,
                         }}
                     />
                 </span>

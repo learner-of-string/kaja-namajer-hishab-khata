@@ -1,8 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
-import NamazList from "../Pages/NamazList";
-import Signin from "../Pages/Signin";
+import { lazy, Suspense } from "react";
 import Root from "../Root";
 import PrivateRouts from "./PrivateRouts";
+import LoadingSpinner from "../Components/LoadingSpinner";
+
+// Lazy load components for better performance
+const NamazList = lazy(() => import("../Pages/NamazList"));
+const Signin = lazy(() => import("../Pages/Signin"));
 
 const routes = createBrowserRouter([
     {
@@ -10,16 +14,30 @@ const routes = createBrowserRouter([
         element: <Root />,
         children: [
             {
-                path: "/dashboard",
+                index: true, // This handles the root path "/"
+                element: (
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <Signin />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "dashboard",
                 element: (
                     <PrivateRouts>
-                        <NamazList />
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <NamazList />
+                        </Suspense>
                     </PrivateRouts>
                 ),
             },
             {
-                path: "/sign-in",
-                element: <Signin />,
+                path: "sign-in",
+                element: (
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <Signin />
+                    </Suspense>
+                ),
             },
         ],
     },

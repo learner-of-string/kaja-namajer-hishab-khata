@@ -4,7 +4,7 @@ A full-stack web application for tracking missed prayers (কাযা নাম
 
 ## Live Demo
 
-🌐 [Live Site](https://registry-of-kaja-namaj.web.app)
+🌐 [Live Site](https://kaja-namajer-hisab-frontend.vercel.app)
 
 ---
 

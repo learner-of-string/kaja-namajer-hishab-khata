@@ -1,6 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import { MongoClient, ServerApiVersion } from "mongodb";
+import "dotenv/config";
 
 //initiate express app
 const app = express();
@@ -10,14 +11,13 @@ const port = process.env.port || 3000;
 app.use(
     cors({
         origin: [
-            "https://registry-of-kaja-namaj.web.app",
+            "https://kaja-namajer-hisab-frontend.vercel.app",
             "http://localhost:5173",
         ],
     })
 );
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = process.env.db_uri;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
